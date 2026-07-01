@@ -38,27 +38,25 @@ body.dark {
   --button-bg: #1e293b;
 }
 
-body.dark .balance .icon-wrapper{
-    background:#1E3A8A;
+body.dark .balance .icon-wrapper {
+  background: #1e3a8a;
 }
 
-body.dark .income .icon-wrapper{
-    background:#14532D;
+body.dark .income .icon-wrapper {
+  background: #14532d;
 }
 
-body.dark .expense .icon-wrapper{
-    background:#7F1D1D;
+body.dark .expense .icon-wrapper {
+  background: #7f1d1d;
 }
 
-body.dark .transactions .icon-wrapper{
-    background:#4C1D95;
+body.dark .transactions .icon-wrapper {
+  background: #4c1d95;
 }
 
-
-body.dark .transactions .icon-wrapper svg{
-    stroke:#ffffff;
+body.dark .transactions .icon-wrapper svg {
+  stroke: #ffffff;
 }
-
 
 * {
   box-sizing: border-box;
@@ -200,11 +198,18 @@ nav li.active a {
   width: 100%;
 }
 
+.mobile-add-transaction {
+  display: none;
+  width: auto;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
 /* --- MAIN LAYOUT CONTEXT --- */
 main {
   margin-left: 260px;
   flex: 1;
-  width: calc(100vw - 260px);
+  width: calc(100vw - 275px);
   min-height: 100vh;
   padding: 32px;
   background: var(--bg-main);
@@ -214,8 +219,9 @@ main {
 .top-bar {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 32px;
+  gap: 16px;
 }
 
 .header-title h2 {
@@ -232,7 +238,15 @@ main {
 .user-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.display-username {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .username {
@@ -281,19 +295,19 @@ main {
 }
 
 .metric-card.balance .icon-wrapper {
-  background-color: #DBEAFE;
+  background-color: #dbeafe;
   color: var(--primary-blue);
 }
 .metric-card.income .icon-wrapper {
-  background-color: #DCFCE7;
+  background-color: #dcfce7;
   color: var(--income-green);
 }
 .metric-card.expense .icon-wrapper {
-  background-color: #FEE2E2;
+  background-color: #fee2e2;
   color: var(--expense-red);
 }
 .metric-card.transactions .icon-wrapper {
-  background-color: #EDE9FE;
+  background-color: #ede9fe;
   color: #0369a1;
 }
 
@@ -636,6 +650,14 @@ input:checked + .slider:before {
     transform: translateX(0);
   }
 
+  aside .btn-add-transaction {
+    display: none;
+  }
+
+  .mobile-add-transaction {
+    display: flex;
+  }
+
   main {
     margin-left: 0;
     width: 100%;
@@ -644,7 +666,23 @@ input:checked + .slider:before {
 
   .top-bar {
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .user-actions {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .mobile-add-transaction {
+    display: flex;
+    width: 100%;
+    max-width: 220px;
+    justify-content: center;
   }
 
   .table-controls {
@@ -905,4 +943,497 @@ body.dark .auth-form-group input {
   color: white;
 
   border-color: #334155;
+}
+
+/* Overlay */
+
+.modal-overlay {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.55);
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  visibility: hidden;
+
+  opacity: 0;
+
+  transition: 0.3s;
+
+  z-index: 9999;
+}
+
+
+/* Modal */
+
+.transaction-modal{
+
+    width:470px;
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:28px;
+
+    animation:popup .3s ease;
+
+}
+
+/* Animation */
+
+@keyframes popup {
+  from {
+    transform: scale(0.9);
+
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+
+    opacity: 1;
+  }
+}
+
+/* Header */
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+}
+
+.close-modal {
+  border: none;
+  background: none;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* Form */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+  height: 48px;
+  border: 1px solid #dbe2ea;
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: 15px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.save-btn {
+  width: 100%;
+  height: 50px;
+  border: none;
+  border-radius: 10px;
+  background: #000;
+  color: white;
+  font-size: 17px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.save-btn:hover {
+  background: #222;
+}
+
+body.dark .modal-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+body.dark .transaction-modal {
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #334155;
+}
+
+body.dark .modal-header h2 {
+  color: #f8fafc;
+}
+
+body.dark .close-modal {
+  color: #cbd5e1;
+}
+
+body.dark .close-modal:hover {
+  color: #ffffff;
+}
+
+/* Labels */
+
+body.dark .form-group label {
+  color: #e2e8f0;
+}
+
+/* Inputs */
+
+body.dark .form-group input,
+body.dark .form-group select {
+  background: #0f172a;
+
+  color: #f8fafc;
+
+  border: 1px solid #334155;
+}
+
+/* Placeholder */
+
+body.dark .form-group input::placeholder {
+  color: #94a3b8;
+}
+
+/* Select options */
+
+body.dark .form-group select option {
+  background: #1e293b;
+  color: #f8fafc;
+}
+
+/* Focus */
+
+body.dark .form-group input:focus,
+body.dark .form-group select:focus {
+  outline: none;
+
+  border-color: #3b82f6;
+
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Save Button */
+
+body.dark .save-btn {
+  background: #2563eb;
+
+  color: white;
+}
+
+body.dark .save-btn:hover {
+  background: #1d4ed8;
+}
+
+/* ==========================
+   TRANSACTION MODAL
+========================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+
+  visibility: hidden;
+  opacity: 0;
+
+  transition: .3s;
+
+  z-index: 9999;
+}
+
+.modal-overlay.active{
+   display: flex;
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.transaction-modal {
+  width: 470px;
+  background: #fff;
+
+  border-radius: 18px;
+
+  padding: 28px;
+
+  animation: popup 0.25s ease;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes popup {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Header */
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 22px;
+}
+
+.modal-header h2 {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.close-modal {
+  border: none;
+  background: none;
+
+  font-size: 30px;
+
+  cursor: pointer;
+
+  color: #64748b;
+
+  transition: 0.2s;
+}
+
+.close-modal:hover {
+  color: #000;
+}
+
+/* Form */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+
+  font-weight: 500;
+
+  color: #0f172a;
+}
+
+.form-group input,
+.form-group select {
+  height: 48px;
+
+  border: 1px solid #cbd5e1;
+
+  border-radius: 10px;
+
+  padding: 0 14px;
+
+  font-size: 15px;
+
+  outline: none;
+
+  transition: 0.25s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #2563eb;
+
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.form-group input::placeholder {
+  color: #94a3b8;
+}
+
+.row {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 16px;
+}
+
+/* Save Button */
+
+.save-btn {
+  width: 100%;
+
+  height: 50px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #000;
+
+  color: white;
+
+  font-size: 17px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  margin-top: 10px;
+
+  transition: 0.25s;
+}
+
+.save-btn:hover {
+  background: #222;
+}
+
+/* ===================================
+        DARK MODE
+=================================== */
+
+body.dark .modal-overlay {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+body.dark .transaction-modal {
+  background: #1e293b;
+
+  border: 1px solid #334155;
+
+  color: #f8fafc;
+}
+
+body.dark .modal-header h2 {
+  color: #f8fafc;
+}
+
+body.dark .close-modal {
+  color: #cbd5e1;
+}
+
+body.dark .close-modal:hover {
+  color: white;
+}
+
+body.dark .form-group label {
+  color: #e2e8f0;
+}
+
+body.dark .form-group input,
+body.dark .form-group select {
+  background: #0f172a;
+
+  color: white;
+
+  border: 1px solid #334155;
+}
+
+body.dark .form-group input::placeholder {
+  color: #94a3b8;
+}
+
+body.dark .form-group select option {
+  background: #1e293b;
+
+  color: white;
+}
+
+body.dark .form-group input:focus,
+body.dark .form-group select:focus {
+  border-color: #3b82f6;
+
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+body.dark .save-btn {
+  background: #2563eb;
+}
+
+body.dark .save-btn:hover {
+  background: #1d4ed8;
+}
+
+/* ===================================
+          MOBILE
+=================================== */
+
+@media (max-width: 764px) {
+  
+
+  .modal-header h2 {
+    font-size: 24px;
+  }
+
+
+  .form-group input,
+  .form-group select {
+    height: 46px;
+
+    font-size: 15px;
+  }
+
+  .save-btn {
+    height: 48px;
+
+    font-size: 16px;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+
+@media (max-width:764px){
+
+    .modal-overlay{
+        justify-content:center;
+        align-items:center;
+        padding:16px;
+    }
+
+    .transaction-modal{
+        width:100%;
+        max-width:420px;
+        border-radius:18px;
+        padding:22px;
+        max-height:90vh;
+        overflow-y:auto;
+    }
+
+    .row{
+        grid-template-columns:1fr;
+    }
 }
