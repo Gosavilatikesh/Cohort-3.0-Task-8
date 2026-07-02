@@ -413,7 +413,6 @@ main {
   margin-top: 12px;
 }
 
-/* --- PREFERENCES FRAME --- */
 .pref-container {
   display: flex;
   flex-direction: column;
@@ -620,7 +619,6 @@ input:checked + .slider:before {
   padding: 48px 0;
 }
 
-/* --- MEDIA QUERIES (RESPONSIVE STYLING) --- */
 @media (max-width: 1024px) {
   .metrics-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -939,9 +937,7 @@ body.dark .auth-form-group label {
 
 body.dark .auth-form-group input {
   background: #0f172a;
-
   color: white;
-
   border-color: #334155;
 }
 
@@ -949,27 +945,17 @@ body.dark .auth-form-group input {
 
 .modal-overlay {
   position: fixed;
-
   top: 0;
   left: 0;
-
   width: 100%;
   height: 100%;
-
   background: rgba(0, 0, 0, 0.55);
-
   display: flex;
-
   justify-content: center;
-
   align-items: center;
-
   visibility: hidden;
-
   opacity: 0;
-
   transition: 0.3s;
-
   z-index: 9999;
 }
 
@@ -977,15 +963,10 @@ body.dark .auth-form-group input {
 /* Modal */
 
 .transaction-modal{
-
     width:470px;
-
     background:#fff;
-
     border-radius:18px;
-
     padding:28px;
-
     animation:popup .3s ease;
 
 }
@@ -995,13 +976,11 @@ body.dark .auth-form-group input {
 @keyframes popup {
   from {
     transform: scale(0.9);
-
     opacity: 0;
   }
 
   to {
     transform: scale(1);
-
     opacity: 1;
   }
 }
@@ -1103,9 +1082,7 @@ body.dark .form-group label {
 body.dark .form-group input,
 body.dark .form-group select {
   background: #0f172a;
-
   color: #f8fafc;
-
   border: 1px solid #334155;
 }
 
@@ -1127,9 +1104,7 @@ body.dark .form-group select option {
 body.dark .form-group input:focus,
 body.dark .form-group select:focus {
   outline: none;
-
   border-color: #3b82f6;
-
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
 }
 
@@ -1145,29 +1120,22 @@ body.dark .save-btn:hover {
   background: #1d4ed8;
 }
 
-/* ==========================
-   TRANSACTION MODAL
-========================== */
 
 .modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,.45);
-
   display: none;
   justify-content: center;
   align-items: center;
-
   visibility: hidden;
   opacity: 0;
-
   transition: .3s;
-
   z-index: 9999;
 }
 
 .modal-overlay.active{
-   display: flex;
+    display: flex;
     visibility: visible;
     opacity: 1;
 }
@@ -1176,13 +1144,9 @@ body.dark .save-btn:hover {
 .transaction-modal {
   width: 470px;
   background: #fff;
-
   border-radius: 18px;
-
   padding: 28px;
-
   animation: popup 0.25s ease;
-
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 }
 
@@ -1204,7 +1168,6 @@ body.dark .save-btn:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   margin-bottom: 22px;
 }
 
@@ -1216,13 +1179,9 @@ body.dark .save-btn:hover {
 .close-modal {
   border: none;
   background: none;
-
   font-size: 30px;
-
   cursor: pointer;
-
   color: #64748b;
-
   transition: 0.2s;
 }
 
@@ -1235,39 +1194,29 @@ body.dark .save-btn:hover {
 .form-group {
   display: flex;
   flex-direction: column;
-
   margin-bottom: 18px;
 }
 
 .form-group label {
   margin-bottom: 8px;
-
   font-weight: 500;
-
   color: #0f172a;
 }
 
 .form-group input,
 .form-group select {
   height: 48px;
-
   border: 1px solid #cbd5e1;
-
   border-radius: 10px;
-
   padding: 0 14px;
-
   font-size: 15px;
-
   outline: none;
-
   transition: 0.25s;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   border-color: #2563eb;
-
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
@@ -1277,9 +1226,7 @@ body.dark .save-btn:hover {
 
 .row {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
   gap: 16px;
 }
 
@@ -1287,25 +1234,15 @@ body.dark .save-btn:hover {
 
 .save-btn {
   width: 100%;
-
   height: 50px;
-
   border: none;
-
   border-radius: 10px;
-
   background: #000;
-
   color: white;
-
   font-size: 17px;
-
   font-weight: 600;
-
   cursor: pointer;
-
   margin-top: 10px;
-
   transition: 0.25s;
 }
 
@@ -1313,19 +1250,13 @@ body.dark .save-btn:hover {
   background: #222;
 }
 
-/* ===================================
-        DARK MODE
-=================================== */
-
 body.dark .modal-overlay {
   background: rgba(0, 0, 0, 0.75);
 }
 
 body.dark .transaction-modal {
   background: #1e293b;
-
   border: 1px solid #334155;
-
   color: #f8fafc;
 }
 
@@ -1348,9 +1279,7 @@ body.dark .form-group label {
 body.dark .form-group input,
 body.dark .form-group select {
   background: #0f172a;
-
   color: white;
-
   border: 1px solid #334155;
 }
 
@@ -1360,14 +1289,12 @@ body.dark .form-group input::placeholder {
 
 body.dark .form-group select option {
   background: #1e293b;
-
   color: white;
 }
 
 body.dark .form-group input:focus,
 body.dark .form-group select:focus {
   border-color: #3b82f6;
-
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
 }
 
@@ -1378,10 +1305,6 @@ body.dark .save-btn {
 body.dark .save-btn:hover {
   background: #1d4ed8;
 }
-
-/* ===================================
-          MOBILE
-=================================== */
 
 @media (max-width: 764px) {
   
