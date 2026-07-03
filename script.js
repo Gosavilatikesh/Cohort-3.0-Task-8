@@ -313,7 +313,9 @@ function displayTransactions(data = transactions) {
           <td>${transaction.description}</td>
           <td>${transaction.category}</td>
           <td>
-            ${transaction.type === "Income" ? "+" : "-"}${getCurrency()}${transaction.amount}
+            <span style="color: ${transaction.type === "Income" ? "#00A73D" : "#E80000"}; font-weight: 600;">
+              ${transaction.type === "Income" ? "+" : "-"}${getCurrency()}${transaction.amount}
+            </span>
           </td>
 
           <td>

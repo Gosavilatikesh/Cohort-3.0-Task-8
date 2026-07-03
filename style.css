@@ -14,6 +14,8 @@
   --hover: #f1f5f9;
 
   --button-bg: #ffffff;
+  --income-green: #00A73D;
+  --expense-red: #E80000;
 }
 
 body.dark {
@@ -877,7 +879,7 @@ input:focus {
 }
 
 .auth-form-group input:focus {
-  border-color: #16a34a;
+  border-color: #00A73D;
 }
 
 /* Primary Register Green Button Styling */
@@ -1667,7 +1669,7 @@ body.dark #backDashboard:hover{
 }
 
 .btn-reset:hover{
-    background:#dc2626;
+    background:#E80000;
 }
 
 body.dark .settings-card{
