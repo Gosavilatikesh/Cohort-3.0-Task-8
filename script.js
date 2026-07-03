@@ -1,5 +1,9 @@
 lucide.createIcons();
 
+function getCurrency(){
+  return localStorage.getItem("currency") || "₹";
+}
+
 const menuToggle = document.getElementById("menuToggle");
 const sidebar = document.getElementById("sidebar");
 
@@ -309,7 +313,7 @@ function displayTransactions(data = transactions) {
           <td>${transaction.description}</td>
           <td>${transaction.category}</td>
           <td>
-            ${transaction.type === "Income" ? "+" : "-"}₹${transaction.amount}
+            ${transaction.type === "Income" ? "+" : "-"}${getCurrency()}${transaction.amount}
           </td>
 
           <td>
@@ -366,13 +370,13 @@ function updateSummary() {
   });
 
   document.querySelector("#currentBalance").textContent =
-    `₹${income - expense}`;
+    `${getCurrency()}${income - expense}`;
 
   document.querySelector("#totalIncome").textContent =
-    `₹${income}`;
+    `${getCurrency()}${income}`;
 
   document.querySelector("#totalExpense").textContent =
-    `₹${expense}`;
+    `${getCurrency()}${expense}`;
 
   document.querySelector("#totalTransactions").textContent =
     transactions.length;
@@ -444,3 +448,81 @@ resetBtn.addEventListener('click', () => {
 
   alert("All transactions deleted successfully!");
 })
+
+//setting logic
+
+const settingsBtn = document.querySelector("#settingsBtn");
+const dashboardBtn = document.querySelector("#dashboardBtn");
+const settingsPage = document.querySelector("#settingsPage");
+const backDashboard = document.querySelector("#backDashboard");
+const dashboardContent = document.querySelector("#dashboardContent");
+const dashboardNavItem = document.querySelector("#dashboardNavItem");
+const settingsNavItem = document.querySelector("#settingsNavItem");
+
+function setActiveNav(activeItem) {
+  [dashboardNavItem, settingsNavItem].forEach((item) => {
+    item.classList.remove("active");
+  });
+  activeItem.classList.add("active");
+}
+
+function showDashboardView() {
+  dashboardContent.classList.remove("dashboard-hidden");
+  settingsPage.classList.remove("active");
+  settingsPage.classList.add("dashboard-hidden");
+  setActiveNav(dashboardNavItem);
+  sidebar.classList.remove("active");
+}
+
+function showSettingsView() {
+  dashboardContent.classList.add("dashboard-hidden");
+  settingsPage.classList.add("active");
+  settingsPage.classList.remove("dashboard-hidden");
+  setActiveNav(settingsNavItem);
+
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+  settingUsername.value = user.userName;
+  settingCurrency.value = localStorage.getItem("currency") || "₹";
+  sidebar.classList.remove("active");
+}
+
+dashboardBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  showDashboardView();
+});
+
+settingsBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  showSettingsView();
+});
+
+backDashboard.addEventListener("click", () => {
+  showDashboardView();
+});
+
+const saveSettings = document.querySelector("#saveSettings");
+
+saveSettings.addEventListener("click", () => {
+  const username = document.querySelector("#settingUsername").value.trim();
+  const currency = document.querySelector("#settingCurrency").value;
+
+  if (!username) {
+    alert("Please enter a username");
+    return;
+  }
+
+  let user = JSON.parse(localStorage.getItem("loggedInUser"));
+  user.userName = username;
+
+  localStorage.setItem("loggedInUser", JSON.stringify(user));
+  localStorage.setItem("currency", currency);
+
+  displayUser.textContent = `Hello, ${username}`;
+  displayTransactions();
+  updateSummary();
+
+  showDashboardView();
+
+  alert("Settings Saved");
+});
+
