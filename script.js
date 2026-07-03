@@ -160,6 +160,48 @@ if (savedTheme === "dark") {
   darkToggle.checked = true;
 }
 
+// chart logic
+
+const ctx = document.querySelector("#financeChart").getContext("2d");
+let financeChart;
+
+function updateChart() {
+  const income = transactions
+    .filter((t) => t.type === "Income")
+    .reduce((sum, t) => sum + Number(t.amount), 0);
+
+  const expense = transactions
+    .filter((t) => t.type === "Expense")
+    .reduce((sum, t) => sum + Number(t.amount), 0);
+
+  if (financeChart) {
+    financeChart.destroy();
+  }
+
+  financeChart = new Chart(ctx, {
+    type: "bar",
+
+    data: {
+      labels: ["Income", "Expense"],
+
+      datasets: [
+        {
+          label: "Amount",
+
+          data: [income, expense],
+
+          backgroundColor: ["#16a34a", "#dc2626"],
+        },
+      ],
+    },
+
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+    },
+  });
+}
+
 // add transaction logic
 
 const addBtn = document.querySelectorAll(".btn-add-transaction");
@@ -187,55 +229,69 @@ modal.addEventListener("click", (e) => {
 
 // save transaction logic
 
-  const transactionForm = document.querySelector("#transactionForm")
+let editId = null;
 
-  let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+const transactionForm = document.querySelector("#transactionForm");
 
-  transactionForm.addEventListener('submit', (e) => {
-    e.preventDefault()
-    let type = e.target[0].value;
-    let description = e.target[1].value.trim();
-    let amount = Number(e.target[2].value);
-    let date = e.target[3].value;
-    let category = e.target[4].value;
+let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
 
-    const transaction = {
-      id: Date.now(),
+transactionForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  let type = e.target[0].value;
+  let description = e.target[1].value.trim();
+  let amount = Number(e.target[2].value);
+  let date = e.target[3].value;
+  let category = e.target[4].value;
+
+  const transaction = {
+    id: Date.now(),
+    type,
+    description,
+    amount,
+    date,
+    category,
+  };
+
+  if (description.trim() === "" || amount <= 0) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  if (editId === null) {
+    transactions.push(transaction);
+  } else {
+    const index = transactions.findIndex((t) => t.id === editId);
+
+    transactions[index] = {
+      id: editId,
       type,
       description,
       amount,
       date,
-      category  
-    }
+      category,
+    };
+    editId = null;
+  }
 
-    if(description.trim() === "" || amount <=0 ){
-      alert("Please fill all fields")
-      return;
-    }
+  localStorage.setItem("transactions", JSON.stringify(transactions));
 
-    transactions.push(transaction);
+  displayTransactions();
+  updateSummary();
+  updateChart();
+  transactionForm.reset();
+  modal.classList.remove("active");
+  document.body.style.overflow = "auto";
+});
 
-    localStorage.setItem("transactions", JSON.stringify(transactions));
+const tbody = document.querySelector("#transactionTableBody");
+console.log(tbody);
+console.log(document.body.innerHTML.includes("transactionTableBody"));
 
-    displayTransactions();
-    updateSummary();
+function displayTransactions(data = transactions) {
+  tbody.innerHTML = "";
 
-    transactionForm.reset()
-    console.log("Before remove:", modal.className);
-    modal.classList.remove("active");
-    console.log("After remove:", modal.className);  
-    document.body.style.overflow = "auto";
-  })
-
-  const tbody = document.querySelector("#transactionTableBody")
-  console.log(tbody);
-  console.log(document.body.innerHTML.includes("transactionTableBody"));
-
-  function displayTransactions(){
-    tbody.innerHTML = "";
-    
-    if(transactions.length === 0){
-      tbody.innerHTML =  `
+  if (data.length === 0) {
+    tbody.innerHTML = `
         <tr class="empty-rom">
           <td colspan="5">
             No transaction recorded yet.                  
@@ -243,12 +299,11 @@ modal.addEventListener("click", (e) => {
         </tr>    
       `;
 
-      return;
-    }
+    return;
+  }
 
-    transactions.forEach(transaction => {
-
-      tbody.innerHTML += `
+  data.forEach((transaction) => {
+    tbody.innerHTML += `
         <tr>
           <td>${transaction.date}</td>
           <td>${transaction.description}</td>
@@ -258,44 +313,134 @@ modal.addEventListener("click", (e) => {
           </td>
 
           <td>
-            <button>Edit</button>
-            <button>Delete</button>
+            <button class="edit-btn" data-id="${transaction.id}">✏️</button>
+            <button class="delete-btn" data-id="${transaction.id}">🗑️</button>
           </td>
 
         </tr>
       `;
-    }); 
 
-  }
+    document.querySelectorAll(".delete-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = Number(btn.dataset.id);
+        deleteTransaction(id);
+      });
+    });
 
+    // delete transaction logic
 
-  
+    //edit transaction logic
+
+    document.querySelectorAll(".edit-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = Number(btn.dataset.id);
+        const transaction = transactions.find((t) => t.id === id);
+        editId = id;
+
+        document.querySelector("#type").value = transaction.type;
+        document.querySelector("#description").value = transaction.description;
+        document.querySelector("#amount").value = transaction.amount;
+        document.querySelector("#date").value = transaction.date;
+        document.querySelector("#category").value = transaction.category;
+
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      });
+    });
+  });
+}
+
 function updateSummary() {
+
   let income = 0;
   let expense = 0;
 
-  transactions.forEach(transaction => {
-    if (transaction.type === "Income") {
-      income += transaction.amount;
+  transactions.forEach((t) => {
+
+    if (t.type === "Income") {
+      income += Number(t.amount);
     } else {
-      expense += transaction.amount;
+      expense += Number(t.amount);
     }
+
   });
 
-  const balance = income - expense;
+  document.querySelector("#currentBalance").textContent =
+    `₹${income - expense}`;
 
-  document.querySelector("#currentBalance").textContent = `₹${balance}`;
+  document.querySelector("#totalIncome").textContent =
+    `₹${income}`;
 
-  document.querySelector("#totalIncome").textContent = `₹${income}`;
+  document.querySelector("#totalExpense").textContent =
+    `₹${expense}`;
 
-  document.querySelector("#totalExpense").textContent = `₹${expense}`;
+  document.querySelector("#totalTransactions").textContent =
+    transactions.length;
 
-  document.querySelector("#totalTransactions").textContent = transactions.length;
 }
 
 displayTransactions();
 updateSummary();
+updateChart();
 
+function deleteTransaction(id) {
+  transactions = transactions.filter((transaction) => transaction.id !== id);
 
+  localStorage.setItem("transactions", JSON.stringify(transactions));
 
+  displayTransactions();
+  updateSummary();
+  updateChart();
+}
 
+// search logic
+
+const searchInput = document.querySelector("#searchInput");
+searchInput.addEventListener("input", () => {
+  const keyboard = searchInput.value.toLowerCase();
+  const filtered = transactions.filter((transaction) => {
+    return (
+      transaction.description.toLowerCase().includes(keyboard) ||
+      transaction.category.toLowerCase().includes(keyboard)
+    );
+  });
+  displayTransactions(filtered);
+});
+
+// filter logic
+
+const FilterType = document.querySelector("#filterType");
+
+FilterType.addEventListener("change", () => {
+  if (FilterType.value === "All") {
+    displayTransactions();
+    return;
+  }
+
+  const filtered = transactions.filter(
+    (transaction) => transaction.type === FilterType.value,
+  );
+  displayTransactions(filtered);
+});
+
+// reset all logic
+
+const resetBtn = document.querySelector(".btn-reset")
+
+resetBtn.addEventListener('click', () => {
+  const confirmReset = confirm(
+    "Are you sure you want to delete all transactions?"
+  );
+
+  if(!confirmReset) return;
+
+  transactions = [];
+  
+  localStorage.removeItem("trasactions");
+
+  displayTransactions();
+  updateSummary();
+  updateChart();
+
+  alert("All transactions deleted successfully!");
+})

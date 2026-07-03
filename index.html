@@ -139,20 +139,9 @@
                                 <span class="legend-color expense"></span> Expenses
                             </div>
                         </div>
-                        <div class="chart-mock">
-                            <div class="chart-row"><span>1.0</span></div>
-                            <div class="chart-row"><span>0.9</span></div>
-                            <div class="chart-row"><span>0.8</span></div>
-                            <div class="chart-row"><span>0.7</span></div>
-                            <div class="chart-row"><span>0.6</span></div>
-                            <div class="chart-row"><span>0.5</span></div>
-                            <div class="chart-row"><span>0.4</span></div>
-                            <div class="chart-row"><span>0.3</span></div>
-                            <div class="chart-row"><span>0.2</span></div>
-                            <div class="chart-row"><span>0.1</span></div>
-                            <div class="chart-row"><span>0</span></div>
+                        <div class="chart-container">
+                            <canvas id="financeChart"></canvas>
                         </div>
-                        <div class="chart-x-label">Income vs Expenses</div>
                     </div>
                 </div>
 
@@ -179,10 +168,10 @@
                 <div class="table-controls">
                     <div class="search-wrapper">
                         <i data-lucide="search"></i>
-                        <input type="text" class="search-input" placeholder="Search transactions..." />
+                        <input type="text" id="searchInput" class="search-input" placeholder="Search transactions..." />
                     </div>
 
-                    <select class="filter-select">
+                    <select id="filterType" class="filter-select">
                         <option>All Types</option>
                         <option>Income</option>
                         <option>Expense</option>
@@ -280,7 +269,9 @@
 
             </div>
 
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             <script src="./script.js"></script>
+            
 </body>
 
 </html>
